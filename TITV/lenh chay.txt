@@ -1,0 +1,1 @@
+g++ "bài 5 TITV.cpp" -o main; ./main
