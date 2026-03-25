@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "f:/Workspace/C",
-      "program": "f:/Workspace/C/build/Debug/outDebug",
+      "cwd": "f:/Workspace/C/TITV",
+      "program": "f:/Workspace/C/TITV/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
