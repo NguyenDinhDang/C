@@ -10,6 +10,7 @@
       "externalConsole": true,
       "cwd": "f:/Workspace/C/TITV",
       "program": "f:/Workspace/C/TITV/build/Debug/outDebug",
+      "preLaunchTask": "C/C++ Runner: Build & Debug Session", // 👈 thêm dòng này
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
