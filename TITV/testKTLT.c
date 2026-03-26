@@ -4,8 +4,10 @@
 //g++ "testKLT.c" -o main; ./main 
 
 int main(){
-  int arrInt[] = {6, 5, 4, 3, 2, 1};
+  char arrCourseName[][11] = {"JavaScript", "NodeJS", "Python"};
+  int numCourses = sizeof(arrCourseName) / sizeof(arrCourseName[0]);
 
-  printf("%d", arrInt[arrInt[arrInt[arrInt[2]]]]);
-
+  for (int i = 0; i < numCourses; i++) {
+    printf("%s ", arrCourseName[i]);
+  }
 }
