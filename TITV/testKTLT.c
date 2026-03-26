@@ -1,19 +1,11 @@
 #include <stdio.h>
 #include <string.h>
 
+//g++ "testKLT.c" -o main; ./main 
+
 int main(){
-    int number = 3;
-char result[10];
-switch (number) {
-  case 2:
-    strcpy(result, "3");
-  case 3:
-    strcpy(result, "4");            
-  case 4:
-    strcpy(result, "2");
-    break;
-  default:
-    strcpy(result, "NoValue");
-}
-printf("%s", result);
+  int arrInt[] = {6, 5, 4, 3, 2, 1};
+
+  printf("%d", arrInt[arrInt[arrInt[arrInt[2]]]]);
+
 }
