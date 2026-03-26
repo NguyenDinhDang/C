@@ -4,17 +4,17 @@
 //g++ "testKLT.c" -o main; ./main 
 
 int main(){
-  int arrInt[] = {2, 3, 6};
-  char arrString[][2] = { "S", "Z", "T", "W" };
-  int sumEven = 0;
-  int arrIntLength = sizeof(arrInt)/sizeof(int);
+  char* arrString[] = { "Z", "S", "B" };
+  int arrStringLength = sizeof(arrString) / sizeof(char*);
 
-  for(int i=0; i < arrIntLength; i++) {
-    if(arrInt[i] % 2 == 0) {
-        sumEven += arrInt[i];
+  char result[10] = "";
+
+  for (int i = 0; i < arrStringLength; i++) {
+    strcat(result, arrString[i]);
+    if (i < arrStringLength - 1) {
+        strcat(result, "/");
     }
-    arrString[i][1] = sumEven + '0';
   }
 
-  printf("%s", arrString[1]);
+  printf("%s%d", result, arrStringLength);
 }
