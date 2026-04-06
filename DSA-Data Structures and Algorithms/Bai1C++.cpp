@@ -15,23 +15,20 @@ using ll = long long;
 
 
 void hamKkhoidau();
-
+void hamAuto();
 
 int main(){
-    int n; cin>>n;
-    vector<int> v(n); 
-    for(int i=0; i< n; i++){
-        cin >> v[i];
-    }
-    for(int x : v){
-        cout << x <<endl;
-    }
-    v.insert(v.begin()+2, 100);
-    for(auto x : v) cout<< x<<" ";
-    auto it = v.begin();
-    auto x = 100;
-    auto y = "@";
-
+    //insert : O(logn) đây là một hàm không cho phép 2 phần tử giống nhau
+    //Set là cấu trúc dữ liệu kiểu cây nên nó không thể duyệt bằng index
+    set<int> se; {}
+    se.insert(2); //{2}
+    se.insert(3); //{2, 3}
+    se.insert(1); //{1, 2, 3}
+    se.insert(2); //{1, 2, 3}
+    cout << se.size() <<endl;
+    for(int x : se) cout << x <<endl;
+    cout <<endl;
+    for(auto it = se.rbegin(); it != se.rend(); it++) cout << *it <<endl;
 }
 
 
@@ -52,7 +49,21 @@ int main(){
 
 
 
-
+void hamAuto(){
+    int n; cin>>n;
+    vector<int> v(n); 
+    for(int i=0; i< n; i++){
+        cin >> v[i];
+    }
+    for(int x : v){
+        cout << x <<endl;
+    }
+    v.insert(v.begin()+2, 100);
+    for(auto x : v) cout<< x<<" ";
+    auto it = v.begin();
+    auto x = 100;
+    auto y = "@";
+}
 
 void hamkhoidau(){
     // v.push_back(3); //{3}
