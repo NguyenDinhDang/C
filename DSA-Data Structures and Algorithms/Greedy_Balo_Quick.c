@@ -15,14 +15,26 @@ void swap(Object *a, Object *b) {
     *b = temp;
 }
 
-void interchangeSort(listObject list, int n) {
-    for (int i = 0; i < n - 1; i++) {
-        for (int j = i + 1; j < n; j++) {
-            if (list[i].Value * list[j].Weight < list[j].Value * list[i].Weight) {
-                swap(&list[i], &list[j]);
-            }
+void quickSort(listObject list, int left, int right) {
+    if (left >= right) return;
+    
+    Object pivot = list[(left + right) / 2];
+    int i = left;
+    int j = right;
+    
+    while (i <= j) {
+        while (list[i].Value * pivot.Weight > pivot.Value * list[i].Weight) i++;
+        while (list[j].Value * pivot.Weight < pivot.Value * list[j].Weight) j--;
+        
+        if (i <= j) {
+            swap(&list[i], &list[j]);
+            i++;
+            j--;
         }
     }
+    
+    quickSort(list, left, j);
+    quickSort(list, i, right);
 }
 
 int choose(int a, int b) {
@@ -33,7 +45,9 @@ void greedy(listObject list, int Weight, int n){
     for (int i = 0; i < n; i++) {
         list[i].solution = 0;
     }
-    interchangeSort(list, n);
+    
+    quickSort(list, 0, n - 1);
+    
     for(int i = 0; i < n; i++){
         if (Weight <= 0) break;
         list[i].solution = choose(Weight, list[i].Weight);
