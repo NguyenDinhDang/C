@@ -142,19 +142,19 @@ int main(void) {
 
     printf("=== HE THONG MO PHONG HANG DOI TOAN DIEN (MONTE CARLO) ===\n\n");
 
-    printf("1. Nhap so luong khach hang can mo phong (VD: 50000): ");
+    printf("1. Nhap so luong khach hang can mo phong (VD: 10000): ");
     scanf("%ld", &num_customers);
     
-    printf("2. Nhap so luong khach hang Warm-up (VD: 5000): ");
+    printf("2. Nhap so luong khach hang Warm-up (VD: 1000): ");
     scanf("%ld", &warmup);
 
-    printf("3. Nhap thoi gian kien nhan toi da (phut, VD: 30): ");
+    printf("3. Nhap thoi gian kien nhan toi da (phut, VD: 15): ");
     scanf("%lf", &max_patience);
 
     printf("4. Nhap so luong may chu/quay phuc vu cho he thong 'c' (VD: 3): ");
     scanf("%d", &num_servers);
 
-    printf("5. Nhap toc do den trung binh cua khach (lambda - khach/phut, VD: 0.5): ");
+    printf("5. Nhap toc do den trung binh cua khach (lambda - khach/phut, VD: 1.4): ");
     scanf("%lf", &lambda);
 
     printf("\n--- THIET LAP PHAN PHOI PHUC VU ---\n");
@@ -167,24 +167,20 @@ int main(void) {
     // Thiet lap phan phoi G (Log-Normal)
     svc_lognorm.type = DIST_LOGNORMAL;
     printf("\n[G] Nhap tham so cho Log-Normal:\n");
-    printf("    -> Nhap mu_log (VD: 0.1): ");
+    printf("    -> Nhap mu_log (VD: 0.5): ");
     scanf("%lf", &svc_lognorm.param1);
-    printf("    -> Nhap sigma_log (VD: 0.5): ");
+    printf("    -> Nhap sigma_log (VD: 0.2): ");
     scanf("%lf", &svc_lognorm.param2);
 
     printf("\n[~] Dang tinh toan luu luong va mo phong he thong...\n");
     
-    // =========================================================================
     // LUỒNG 1: MÔ PHỎNG HỆ THỐNG NGÂN HÀNG (SYS_BANK - 1 Hàng đợi chung)
-    // =========================================================================
     SimResult r_bank_mm1 = run_simulation(num_customers, max_patience, lambda, 1, &svc_exp, SYS_BANK, warmup);
     SimResult r_bank_mg1 = run_simulation(num_customers, max_patience, lambda, 1, &svc_lognorm, SYS_BANK, warmup);
     SimResult r_bank_mmc = run_simulation(num_customers, max_patience, lambda, num_servers, &svc_exp, SYS_BANK, warmup);
     SimResult r_bank_mgc = run_simulation(num_customers, max_patience, lambda, num_servers, &svc_lognorm, SYS_BANK, warmup);
 
-    // =========================================================================
     // LUỒNG 2: MÔ PHỎNG HỆ THỐNG SIÊU THỊ (SYS_SUPERMARKET - Nhiều hàng đợi độc lập)
-    // =========================================================================
     SimResult r_super_mm1 = run_simulation(num_customers, max_patience, lambda, 1, &svc_exp, SYS_SUPERMARKET, warmup);
     SimResult r_super_mg1 = run_simulation(num_customers, max_patience, lambda, 1, &svc_lognorm, SYS_SUPERMARKET, warmup);
     SimResult r_super_mmc = run_simulation(num_customers, max_patience, lambda, num_servers, &svc_exp, SYS_SUPERMARKET, warmup);
