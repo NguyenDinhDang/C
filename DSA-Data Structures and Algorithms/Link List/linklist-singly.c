@@ -56,6 +56,44 @@ void insertAt(struct Node** head, int data, int position) {
     current->next = newNode; // Gán con trỏ next của nút hiện tại trỏ đến nút mới
 }
 
+void deleteHead(struct Node** head) {
+    if (*head == NULL) return; // Nếu danh sách rỗng, không làm gì
+    struct Node* temp = *head; // Lưu trữ nút hiện tại đầu danh sách
+    *head = (*head)->next; // Cập nhật con trỏ head trỏ đến nút tiếp theo
+    free(temp); // Giải phóng bộ nhớ của nút cũ
+}
+
+void deleteTail(struct Node** head) {
+    if (*head == NULL) return; // Nếu danh sách rỗng, không làm gì
+    if ((*head)->next == NULL) { // Nếu danh sách chỉ có một nút
+        free(*head); // Giải phóng bộ nhớ của nút đầu tiên
+        *head = NULL; // Cập nhật con trỏ head trỏ đến NULL
+        return;
+    }
+    struct Node* current = *head; // Bắt đầu từ nút đầu tiên
+    while (current->next->next != NULL) { // Duyệt đến nút trước nút cuối cùng
+        current = current->next;
+    }
+    free(current->next); // Giải phóng bộ nhớ của nút cuối cùng
+    current->next = NULL; // Cập nhật con trỏ next của nút hiện tại trỏ đến NULL
+}
+
+void deleteAt(struct Node** head, int position) {
+    if (*head == NULL) return; // Nếu danh sách rỗng, không làm gì
+    if (position == 0) { // Nếu vị trí là 0, xóa nút đầu tiên
+        deleteHead(head);
+        return;
+    }
+    struct Node* current = *head; // Bắt đầu từ nút đầu tiên
+    for (int i = 0; i < position - 1 && current != NULL; i++) { // Duyệt đến nút trước vị trí xóa
+        current = current->next;
+    }
+    if (current == NULL || current->next == NULL) return; // Nếu vị trí vượt quá độ dài danh sách, không làm gì
+    struct Node* temp = current->next; // Lưu trữ nút cần xóa
+    current->next = temp->next; // Cập nhật con trỏ next của nút hiện tại trỏ đến nút tiếp theo của nút cần xóa
+    free(temp); // Giải phóng bộ nhớ của nút cần xóa
+}
+
 void printList(struct Node* head) {
     struct Node* current = head; // Bắt đầu từ nút đầu tiên
     while (current != NULL) { // Duyệt qua danh sách cho đến khi gặp NULL
