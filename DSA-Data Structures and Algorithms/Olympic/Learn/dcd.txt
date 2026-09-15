@@ -1,0 +1,20 @@
+#include <stdio.h>
+
+int gcd(long long a, long long b) {
+    long long temp;
+    if(b==0) return 0;
+    else {
+        temp = a%b;
+    }
+    gcd(b, temp);
+}
+
+void testGcd() {
+    long long a = 252;
+    long long b = 105;
+    printf("%lld",gcd(a, b));
+}
+
+int main() {
+    testGcd();
+}
