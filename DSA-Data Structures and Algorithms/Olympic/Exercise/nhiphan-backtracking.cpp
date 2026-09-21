@@ -10,16 +10,16 @@ void printResult (vector<int> &a, int n) {
 }
 
 void nhiphan (int n, int pos, vector<int> &a) {
-    if(pos == n){ 
+    if(pos == n){  // Điều kiện dừng khi đã xét hết các vị trí
         printResult(a, n);
-        return ;
+        return ; // Backtrack: quay lại để xét các khả năng khác
     }
     
-    a[pos] = 0;
-    nhiphan(n, pos + 1, a);
+    a[pos] = 0; // Gán giá trị 0 cho vị trí hiện tại và tiếp tục với vị trí tiếp theo
+    nhiphan(n, pos + 1, a); // Gọi đệ quy để xét vị trí tiếp theo
     
-    a[pos] = 1;
-    nhiphan(n, pos +1, a);
+    a[pos] = 1; // Gán giá trị 1 cho vị trí hiện tại và tiếp tục với vị trí tiếp theo
+    nhiphan(n, pos +1, a); // Gọi đệ quy để xét vị trí tiếp theo
     
 }
 
@@ -30,6 +30,6 @@ int main() {
     cin >>n;
     vector<int> a(n);
     
-    nhiphan(n, 0, a);
+    nhiphan(n, 0, a); 
     return 0;
 }
