@@ -1,334 +1,42 @@
-## Table `alembic_version`
+# Mô Phỏng Hệ Thống Hàng Đợi (Queueing System Simulation)
 
-### Columns
+Dự án này bao gồm các chương trình viết bằng ngôn ngữ C dùng để mô phỏng và phân tích hiệu suất của các hệ thống hàng đợi khác nhau bằng phương pháp Monte Carlo. Hệ thống cung cấp cái nhìn thực tế về cách các cấu trúc hàng đợi hoạt động, từ đó hỗ trợ tối ưu hóa quá trình phục vụ.
 
-| Name | Type | Constraints |
-|------|------|-------------|
-| `version_num` | `varchar` | Primary |
+## Các thành phần chính
 
-## Table `users`
+### 1. `backendSim.c` (Mô phỏng cơ bản)
+Chương trình mô phỏng tự động cho các mô hình hàng đợi chuẩn bao gồm: **M/M/1, M/G/1, M/M/2, và M/G/2**.
+* **Đầu ra (Output):** In ra màn hình console và lưu kết quả vào file `results_full.csv` (được tự động tạo).
+* **Các chỉ số được tính toán:**
+  * `Wq`: Thời gian chờ trung bình trong hàng đợi.
+  * `W`: Tổng thời gian trung bình trong hệ thống (chờ + phục vụ).
+  * `Lq`: Số lượng khách hàng chờ trung bình (độ dài hàng đợi).
+  * `L`: Số lượng khách hàng trung bình trong hệ thống.
+  * `Rho`: Hiệu suất sử dụng quầy phục vụ (tỷ lệ bận).
 
-### Columns
+### 2. `Bank_Market_Simulator.c` (Mô phỏng tương tác nâng cao)
+Phiên bản mô phỏng toàn diện với giao diện dòng lệnh (CLI), cho phép người dùng tùy chỉnh số liệu linh hoạt (số khách hàng, thời gian kiên nhẫn, tốc độ đến, phân phối phục vụ...).
+* **Kiến trúc mô phỏng:**
+  * **Hệ thống Ngân hàng (Bank - Single Queue):** Một hàng đợi chung cho nhiều quầy. Quầy nào trống trước sẽ gọi khách hàng tiếp theo.
+  * **Hệ thống Siêu thị (Supermarket - Multiple Queues):** Mỗi quầy có một hàng đợi độc lập, khách hàng chọn ngẫu nhiên một hàng để xếp.
+* **Tính năng nổi bật:** Đo lường tỷ lệ khách hàng bỏ cuộc (Renege) khi thời gian chờ vượt quá giới hạn kiên nhẫn cho phép. Hỗ trợ phân phối thời gian phục vụ theo quy luật Mũ (Exponential) và Log-Chuẩn (Log-Normal).
 
-| Name | Type | Constraints |
-|------|------|-------------|
-| `username` | `varchar` |  |
-| `full_name` | `varchar` |  |
-| `created_at` | `timestamptz` |  |
-| `updated_at` | `timestamptz` |  |
-| `id` | `uuid` | Primary |
-| `role` | `varchar` |  |
-| `deleted_at` | `timestamptz` |  Nullable |
-| `avatar_url` | `varchar` |  Nullable |
-| `date_of_birth` | `date` |  Nullable |
-| `gender` | `varchar` |  Nullable |
-| `phone_number` | `varchar` |  Nullable |
-| `address` | `varchar` |  Nullable |
-| `major` | `varchar` |  Nullable |
-| `faculty` | `varchar` |  Nullable |
+## Hướng dẫn cài đặt và sử dụng
 
-## Table `documents`
+### Yêu cầu
+* Trình biên dịch C như GCC (ví dụ: MinGW-w64 trên Windows).
 
-### Columns
+### Biên dịch và khởi chạy
 
-| Name | Type | Constraints |
-|------|------|-------------|
-| `id` | `int4` | Primary |
-| `filename` | `varchar` |  |
-| `created_at` | `timestamptz` |  |
-| `workspace_id` | `int4` |  |
-| `status` | `varchar` |  |
-| `metadata_json` | `json` |  Nullable |
-| `title` | `varchar` |  Nullable |
-| `file_size` | `int4` |  |
-| `file_type` | `varchar` |  Nullable |
-| `progress` | `int4` |  |
-| `chunks_count` | `int4` |  |
-| `error_message` | `text` |  Nullable |
-| `file_hash` | `varchar` |  Nullable |
-| `total_chunks` | `int4` |  |
-| `embedding_batches` | `int4` |  |
-| `file_path` | `varchar` |  Nullable |
+**Đối với `backendSim.c`:**
+```powershell
+gcc backendSim.c -o backendSim
+.\backendSim.exe
+```
 
-## Table `chats`
-
-### Columns
-
-| Name | Type | Constraints |
-|------|------|-------------|
-| `id` | `int4` | Primary |
-| `created_at` | `timestamptz` |  |
-| `workspace_id` | `int4` |  |
-| `title` | `varchar` |  |
-| `provider` | `varchar` |  |
-
-## Table `quizzes`
-
-### Columns
-
-| Name | Type | Constraints |
-|------|------|-------------|
-| `id` | `int4` | Primary |
-| `document_id` | `int4` |  Nullable |
-| `question` | `text` |  |
-| `options` | `json` |  |
-| `correct_index` | `int4` |  |
-| `explanation` | `text` |  Nullable |
-| `selected_index` | `int4` |  Nullable |
-| `is_correct` | `bool` |  Nullable |
-| `created_at` | `timestamptz` |  |
-| `topic_id` | `varchar` |  Nullable |
-| `correct_explanation` | `text` |  Nullable |
-| `wrong_explanation` | `text` |  Nullable |
-| `success_message` | `text` |  Nullable |
-| `failure_message` | `text` |  Nullable |
-| `user_id` | `uuid` |  |
-| `deleted_at` | `timestamptz` |  Nullable |
-
-## Table `progress`
-
-### Columns
-
-| Name | Type | Constraints |
-|------|------|-------------|
-| `id` | `int4` | Primary |
-| `total_documents` | `int4` |  |
-| `total_chats` | `int4` |  |
-| `total_quizzes` | `int4` |  |
-| `correct_answers` | `int4` |  |
-| `accuracy` | `float8` |  |
-| `study_minutes` | `int4` |  |
-| `updated_at` | `timestamptz` |  |
-| `hearts_remaining` | `int4` |  |
-| `total_attempts` | `int4` |  |
-| `completed_quizzes` | `int4` |  |
-| `best_score` | `int4` |  |
-| `ai_quiz_generations` | `int4` |  |
-| `user_id` | `uuid` |  Unique |
-| `deleted_at` | `timestamptz` |  Nullable |
-
-## Table `workspaces`
-
-### Columns
-
-| Name | Type | Constraints |
-|------|------|-------------|
-| `id` | `int4` | Primary |
-| `created_at` | `timestamptz` |  |
-| `name` | `varchar` |  |
-| `user_id` | `uuid` |  |
-| `deleted_at` | `timestamptz` |  Nullable |
-
-## Table `topics`
-
-### Columns
-
-| Name | Type | Constraints |
-|------|------|-------------|
-| `id` | `varchar` | Primary |
-| `name` | `varchar` |  |
-| `category` | `varchar` |  Nullable |
-| `difficulty_level` | `varchar` |  Nullable |
-
-## Table `roadmap_progress`
-
-### Columns
-
-| Name | Type | Constraints |
-|------|------|-------------|
-| `id` | `int4` | Primary |
-| `roadmap_version` | `varchar` |  |
-| `node_id` | `varchar` |  |
-| `completed` | `bool` |  |
-| `updated_at` | `timestamptz` |  |
-| `user_id` | `uuid` |  |
-
-## Table `study_recommendations`
-
-### Columns
-
-| Name | Type | Constraints |
-|------|------|-------------|
-| `id` | `int4` | Primary |
-| `topic_id` | `varchar` |  |
-| `recommendation_type` | `varchar` |  |
-| `content` | `json` |  |
-| `is_completed` | `bool` |  |
-| `created_at` | `timestamptz` |  |
-| `user_id` | `uuid` |  |
-
-## Table `roadmap_cache`
-
-### Columns
-
-| Name | Type | Constraints |
-|------|------|-------------|
-| `id` | `varchar` | Primary |
-| `workspace_id` | `int4` |  |
-| `cache_key` | `varchar` |  |
-| `roadmap_json` | `json` |  |
-| `summary` | `text` |  Nullable |
-| `document_hash` | `varchar` |  Nullable |
-| `quiz_hash` | `varchar` |  Nullable |
-| `ai_model` | `varchar` |  Nullable |
-| `version` | `int4` |  |
-| `created_at` | `timestamptz` |  |
-| `updated_at` | `timestamptz` |  |
-| `expires_at` | `timestamptz` |  Nullable |
-| `user_id` | `uuid` |  |
-
-## Table `learning_roadmaps`
-
-### Columns
-
-| Name | Type | Constraints |
-|------|------|-------------|
-| `id` | `varchar` | Primary |
-| `title` | `varchar` |  |
-| `description` | `text` |  Nullable |
-| `metadata` | `json` |  |
-| `source_document_ids` | `json` |  |
-| `generated_model` | `varchar` |  Nullable |
-| `generated_prompt` | `text` |  Nullable |
-| `created_at` | `timestamptz` |  |
-| `updated_at` | `timestamptz` |  |
-| `user_id` | `uuid` |  |
-| `deleted_at` | `timestamptz` |  Nullable |
-
-## Table `roadmap_stages`
-
-### Columns
-
-| Name | Type | Constraints |
-|------|------|-------------|
-| `id` | `varchar` | Primary |
-| `roadmap_id` | `varchar` |  |
-| `stage_order` | `int4` |  |
-| `stage_id` | `varchar` |  |
-| `title` | `varchar` |  |
-| `description` | `text` |  |
-| `icon` | `varchar` |  |
-| `color` | `varchar` |  |
-| `duration_weeks` | `int4` |  |
-| `objectives` | `json` |  |
-| `key_topics` | `json` |  |
-| `is_completed` | `bool` |  |
-| `completed_at` | `timestamptz` |  Nullable |
-| `time_spent_minutes` | `int4` |  |
-| `created_at` | `timestamptz` |  |
-| `updated_at` | `timestamptz` |  |
-
-## Table `messages`
-
-### Columns
-
-| Name | Type | Constraints |
-|------|------|-------------|
-| `id` | `int4` | Primary |
-| `chat_id` | `int4` |  |
-| `role` | `varchar` |  |
-| `content` | `text` |  |
-| `token_usage` | `int4` |  |
-| `created_at` | `timestamptz` |  |
-
-## Table `user_billing`
-
-### Columns
-
-| Name | Type | Constraints |
-|------|------|-------------|
-| `id` | `int4` | Primary |
-| `monthly_token_limit` | `int4` |  |
-| `tokens_used` | `int4` |  |
-| `reset_date` | `date` |  |
-| `created_at` | `timestamptz` |  Nullable |
-| `updated_at` | `timestamptz` |  Nullable |
-| `user_id` | `uuid` |  Unique |
-
-## Table `token_usage_logs`
-
-### Columns
-
-| Name | Type | Constraints |
-|------|------|-------------|
-| `id` | `int4` | Primary |
-| `provider` | `varchar` |  |
-| `model` | `varchar` |  |
-| `tokens_used` | `int4` |  |
-| `workspace_id` | `int4` |  Nullable |
-| `chat_id` | `int4` |  Nullable |
-| `created_at` | `timestamptz` |  Nullable |
-| `user_id` | `uuid` |  |
-
-## Table `system_billing`
-
-### Columns
-
-| Name | Type | Constraints |
-|------|------|-------------|
-| `id` | `int4` | Primary |
-| `monthly_token_cap` | `int4` |  |
-| `tokens_used` | `int4` |  |
-| `reset_date` | `date` |  |
-| `created_at` | `timestamptz` |  Nullable |
-| `updated_at` | `timestamptz` |  Nullable |
-
-## Table `system_token_budget`
-
-### Columns
-
-| Name | Type | Constraints |
-|------|------|-------------|
-| `id` | `int4` | Primary |
-| `monthly_token_limit` | `int4` |  |
-| `tokens_used` | `int4` |  |
-| `alert_threshold` | `float8` |  |
-| `reset_date` | `date` |  |
-| `created_at` | `timestamptz` |  Nullable |
-| `updated_at` | `timestamptz` |  Nullable |
-
-## Table `system_errors`
-
-### Columns
-
-| Name | Type | Constraints |
-|------|------|-------------|
-| `id` | `int4` | Primary |
-| `source` | `varchar` |  |
-| `error_type` | `varchar` |  |
-| `provider` | `varchar` |  Nullable |
-| `workspace_id` | `int4` |  Nullable |
-| `chat_id` | `int4` |  Nullable |
-| `message` | `text` |  Nullable |
-| `metadata_json` | `json` |  Nullable |
-| `created_at` | `timestamptz` |  Nullable |
-| `user_id` | `uuid` |  Nullable |
-
-## Table `audit_logs`
-
-### Columns
-
-| Name | Type | Constraints |
-|------|------|-------------|
-| `id` | `uuid` | Primary |
-| `table_name` | `text` |  |
-| `record_id` | `uuid` |  |
-| `action` | `text` |  |
-| `old_data` | `jsonb` |  Nullable |
-| `new_data` | `jsonb` |  Nullable |
-| `changed_by` | `uuid` |  Nullable |
-| `changed_at` | `timestamptz` |  Nullable |
-
-## Table `user_gpas`
-
-### Columns
-
-| Name | Type | Constraints |
-|------|------|-------------|
-| `id` | `int4` | Primary |
-| `user_id` | `uuid` |  |
-| `semester` | `varchar` |  |
-| `academic_year` | `varchar` |  |
-| `gpa` | `float8` |  |
-| `note` | `varchar` |  Nullable |
-
+**Đối với `Bank_Market_Simulator.c`:**
+```powershell
+gcc Bank_Market_Simulator.c -o Bank_Market_Simulator
+.\Bank_Market_Simulator.exe
+```
+Sau khi khởi chạy chương trình `Bank_Market_Simulator`, hệ thống sẽ yêu cầu bạn nhập các thông số đầu vào để tiến hành mô phỏng và so sánh kết quả.
