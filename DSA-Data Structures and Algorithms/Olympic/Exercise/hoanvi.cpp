@@ -12,7 +12,7 @@ n sẽ chọn phần tử đầu tiên vào giỏ (i)
 
 void printResult (vector<long long> &a, int n) {
     for(int i =0; i<n;i++){
-        cout << a[i];
+        cout << a[i] <<" ";
     }
     cout << endl;
 }
