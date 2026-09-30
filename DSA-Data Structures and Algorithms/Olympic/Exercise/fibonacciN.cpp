@@ -4,7 +4,7 @@ using namespace std;
 
 /*
 Để tối ưu hơn tôi sẽ dùng top-down 
-
+Quy hoạch động 
 ý tưởng: tạo 1 mảng để lưu các phần tử đã tính 
 -> sau khi tính xong sẽ lưu vào mảng 
 -> trước khi bước vào đệ quy sẽ hỏi: Tính chưa |-> Chưa -> tính -> lưu
