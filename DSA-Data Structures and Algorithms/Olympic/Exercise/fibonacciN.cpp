@@ -11,7 +11,7 @@ Quy hoạch động
                                                |-> tính rồi -> lấy ra 
 */
 
-int fibonaci(int n, vector<long long> &a) {
+long long fibonaci(int n, vector<long long> &a) {
     if(n == 0) return 0;
     if(n == 1) return 1;
     long long result;
