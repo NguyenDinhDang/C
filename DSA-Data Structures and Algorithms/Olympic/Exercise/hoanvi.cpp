@@ -25,7 +25,7 @@ void hoanvi (int n, vector<long long> &a, vector<bool> &used) {
 
     for(int i = 1; i<=n; i++) {
         if(used[i]){
-            continue;
+            continue; // Nếu phần tử đã được chọn thì bỏ qua
         }
 
         a.push_back(i); // CHỌN
@@ -34,7 +34,7 @@ void hoanvi (int n, vector<long long> &a, vector<bool> &used) {
         hoanvi(n, a, used); // ĐI SÂU
 
         a.pop_back(); // BỎ CHỌN
-        used[i] = false; 
+        used[i] = false; // Đánh dấu phần tử chưa được chọn
     }
 }
 
@@ -45,7 +45,7 @@ int main() {
     cin >>n;
 
     vector<long long> a;
-    vector<bool> used(n+1, false);
+    vector<bool> used(n+1, false); // Khởi tạo mảng đánh dấu các phần tử đã được chọn hay chưa n+1 là để tránh tràn mảng vì mảng đánh dấu bắt đầu từ 1 đến n
     hoanvi(n, a, used);
     return 0;
 }
